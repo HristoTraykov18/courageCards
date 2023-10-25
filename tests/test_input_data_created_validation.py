@@ -1,5 +1,6 @@
 
 import pytest
+
 from courage_cards import contains_valid_data
 
 
