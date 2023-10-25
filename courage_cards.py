@@ -28,14 +28,14 @@ def contains_valid_data(df):
 
     if 'event' not in df.columns or 'created' not in df.columns:
         print('[ERROR] Could not find \'event\' and/or \'created\' columns!')
-        return False
+        exit(code=2)
 
     df_events = df['event']
 
     # Validate start and end events
     if df_events.iloc[0] != events[0] or df_events.iloc[-1] != events[-1]:
         print('[ERROR] Invalid \'start\' or \'end\' events!')
-        return False
+        exit(code=3)
 
     df_events.drop(labels=[df_events.index[0],
                    df_events.index[-1]], inplace=True)
@@ -44,7 +44,7 @@ def contains_valid_data(df):
     for event in df_events:
         if event not in events:
             print('[ERROR] \'start\' or \'end\' events used more than once!')
-            return False
+            exit(code=4)
 
     df_created = df['created']
 
@@ -52,7 +52,7 @@ def contains_valid_data(df):
         pd.to_datetime(df_created, format='%Y-%m-%d %H:%M:%S.%f-07:00')
     except:
         print(f"[ERROR] Invalid datatime format provided!")
-        return False
+        exit(code=5)
 
     df_len = len(df_created)
 
@@ -61,7 +61,7 @@ def contains_valid_data(df):
             print(
                 '[ERROR] Event {} is created earlier than event {}, while it should be the other way around!'.format(
                     df_created.keys()[i+1], df_created.keys()[i]))
-            return False
+            exit(code=6)
 
     return True
 
@@ -82,8 +82,6 @@ if __name__ == '__main__':
         print('[ERROR] Invalid test data provided. Please use a JSON file!')
         exit(code=1)
 
-    if (not contains_valid_data(df)):
-        exit(code=2)
-
-    courage_cards = CourageCards(df)
-    courage_cards.create_output_csv()
+    if (contains_valid_data(df)):
+        courage_cards = CourageCards(df)
+        courage_cards.create_output_csv()
