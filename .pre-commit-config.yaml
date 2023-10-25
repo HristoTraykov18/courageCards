@@ -17,3 +17,12 @@ repos:
     hooks:
     -   id: isort
         name: isort (python)
+
+  - repo: local
+    hooks:
+    -   id: pytest-check
+        name: pytest check
+        entry: python -m pytest
+        language: system
+        pass_filenames: false
+        always_run: true
