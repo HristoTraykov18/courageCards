@@ -78,10 +78,6 @@ def contains_valid_data(df):
             exit(code=4)
 
     # Validate datetime format
-    i = tuple(df['created'].keys()).index(416)
-    # df['created'].replace(
-    #     df['created'].iloc[i], '2023-04-08 06:16:04.000000-07:00', inplace=True)
-
     if df['created'].dtypes != np.datetime64:
         try:
             df['created'] = pd.to_datetime(
